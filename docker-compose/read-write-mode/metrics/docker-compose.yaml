@@ -21,11 +21,6 @@ services:
       - ALERT_MANAGER_HOST=mimir-backend
       - RULER_HOST=mimir-backend
       - COMPACTOR_HOST=mimir-backend
-    healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     ports:
       - "8080"
 
@@ -37,11 +32,6 @@ services:
     volumes:
       - ../../common/config/mimir/read-write-mode-metrics.yaml:/etc/mimir.yaml # Note: Mimir use read-write-mode-metrics.yaml
       - ./config/mimir:/etc/mimir
-    healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ready || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     deploy:
       replicas: 2
 
@@ -67,11 +57,6 @@ services:
       - ./config/mimir:/etc/mimir
     ports:
       - "8080"
-    healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ready || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     deploy:
       replicas: 3
     networks:
