@@ -10,11 +10,6 @@ include:
 # Read-Write mode (Metrics)
 services:
   gateway:
-    depends_on:
-      mimir-write:
-        condition: service_healthy
-      mimir-backend:
-        condition: service_healthy
     image: nginxinc/nginx-unprivileged:1.25-alpine
     volumes:
       - ../../common/config/nginx:/etc/nginx/templates
@@ -35,9 +30,6 @@ services:
       - "8080"
 
   mimir-backend:
-    depends_on:
-      minio:
-        condition: service_healthy
     image: &mimirImage grafana/mimir:2.10.3
     command:
       - -config.file=/etc/mimir.yaml
@@ -54,9 +46,6 @@ services:
       replicas: 2
 
   mimir-read:
-    depends_on:
-      minio:
-        condition: service_healthy
     image: *mimirImage
     command:
       - -config.file=/etc/mimir.yaml
@@ -69,9 +58,6 @@ services:
 
 
   mimir-write:
-    depends_on:
-      minio:
-        condition: service_healthy
     image: *mimirImage
     command:
       - -config.file=/etc/mimir.yaml
